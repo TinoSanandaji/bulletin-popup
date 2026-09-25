@@ -211,17 +211,20 @@
     if (!CONFIG.articleOnly) return true;
     return !!document.querySelector('article') || (!!document.querySelector('main h1') && location.pathname !== '/');
   }
-  function isLoggedIn() {
-    // Utloggad läsare har knappen "Logga in" i sidhuvudet. Finns "Logga ut"/"Mitt konto" – eller saknas "Logga in" – antar vi inloggad.
+  // Inloggningsläge läses av i sidhuvudet: "Logga in" = utloggad, "Logga ut"/"Mitt konto" = inloggad,
+  // inget av dem = okänt (sidhuvudet inte färdigrenderat än – Next.js hydrerar efter att GTM kört).
+  // Därför avgörs det när en trigger slår till (tidigast 4 s efter sidladdning), inte vid start.
+  function loginState() {
     var els = document.querySelectorAll('header a, header button, nav a, nav button, a, button');
     var sawLogin = false;
     for (var i = 0; i < els.length && i < 400; i++) {
       var t = (els[i].textContent || '').trim();
-      if (/^Logga ut$|^Mitt konto$/i.test(t)) return true;
+      if (/^Logga ut$|^Mitt konto$/i.test(t)) return 'in';
       if (/^Logga in$/i.test(t)) sawLogin = true;
     }
-    return !sawLogin;
+    return sawLogin ? 'out' : 'unknown';
   }
+  function isLoggedIn() { return loginState() === 'in'; }
   function excludedUtm() {
     if (!CONFIG.excludeUtmMediums.length) return false;
     var m = (location.search.match(/[?&]utm_medium=([^&]+)/) || [])[1];
@@ -381,7 +384,7 @@
     return backdrop;
   }
 
-  function showPopup(trigger, forcedVariant) {
+  function showPopup(trigger, forcedVariant, loginSt) {
     if (state.shown) return;
     state.shown = true;
     clearTimers();
@@ -393,7 +396,7 @@
     var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     setTimeout(function () { el.classList.add('bp-in'); }, 30); // setTimeout i st.f. rAF – rAF pausas i bakgrundsflikar
     var ss = readJSON('ss', SS); ss.shown = true; writeJSON('ss', SS, ss);
-    track('view');
+    track('view', loginSt === 'unknown' ? { popup_login: 'unknown' } : null);
 
     function close(reason) {
       el.classList.remove('bp-in');
@@ -453,7 +456,16 @@
     var ready = false;
     var t0 = setTimeout(function () { ready = true; }, CONFIG.minDelayMs);
     state.timers.push(t0);
-    function fire(trigger) { if (!ready) { var t = setTimeout(function () { fire(trigger); }, 500); state.timers.push(t); return; } showPopup(trigger); }
+    // Vid utlösning: vänta tills minDelay gått och sidhuvudet visar inloggningsläget (max 6 s extra);
+    // inloggad läsare → ingen popup; okänt efter väntetiden → visa ändå (hellre det än aldrig).
+    var loginTries = 0;
+    function fire(trigger) {
+      if (state.shown) return;
+      var st = loginState();
+      if (!ready || (st === 'unknown' && loginTries < 12)) { if (ready) loginTries++; var t = setTimeout(function () { fire(trigger); }, 500); state.timers.push(t); return; }
+      if (st === 'in') { clearTimers(); state.shown = true; return; }
+      showPopup(trigger, null, st);
+    }
 
     // 0) ?bp_debug=1 → direkt (efter minDelay), för granskning
     if (debug) fire('debug');
@@ -490,7 +502,7 @@
       if (ss.dismissed && CONFIG.barAfterDismiss && !ss.barClosed && !isLoggedIn()) showBar();
       return false;
     }
-    if (isLoggedIn()) return false;
+    // inloggningsläget avgörs när triggern slår till (se fire) – sidhuvudet är inte alltid renderat vid start
     return true;
   }
 
