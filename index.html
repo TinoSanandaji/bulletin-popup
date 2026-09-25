@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bulletin popup – status</title>
+<meta name="robots" content="noindex">
+<style>
+  body{margin:0;font-family:"Source Sans Pro","Segoe UI",Arial,sans-serif;color:#111;background:#f6f5f2;font-size:16px;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:24px 16px 48px}
+  h1{font-family:Georgia,serif;font-size:30px;margin:0 0 4px}
+  .sub{color:#555;margin:0 0 18px}
+  .box{background:#fff;border:1px solid #e3e0da;border-radius:6px;padding:14px 18px;margin:0 0 16px}
+  .ok{color:#0a7a2f;font-weight:700}.off{color:#d10303;font-weight:700}
+  table{border-collapse:collapse;width:100%;font-size:15px}
+  th,td{border-bottom:1px solid #e3e0da;padding:7px 8px;text-align:left;vertical-align:top}
+  th{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#666}
+  button{font:inherit;font-weight:700;font-size:14px;padding:6px 12px;border-radius:4px;border:1px solid #05569a;background:#ffcc00;color:#05569a;cursor:pointer}
+  code{background:#f0eee9;padding:1px 5px;border-radius:3px;font-size:13px}
+  pre{background:#f0eee9;padding:10px 12px;border-radius:4px;overflow:auto;font-size:13px}
+  .muted{color:#666;font-size:14px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Bulletin – prenumerationspopup</h1>
+  <p class="sub">Det här är vad bulletin.nu hämtar just nu. Ändra i <code>config.json</code> i det här repot – ändringen är live inom ca 10 minuter.</p>
+
+  <div class="box" id="status">Läser config.json …</div>
+
+  <div class="box">
+    <h2 style="margin:0 0 8px;font-size:18px">Varianter</h2>
+    <table id="variants"><thead><tr><th>Nyckel (popup_variant)</th><th>Namn</th><th>Vikt</th><th>Årsknapp</th><th>Tagline</th><th>Urklipp</th><th>Visa</th></tr></thead><tbody></tbody></table>
+    <p class="muted">Vikt 0 = varianten lottas inte. Alla lika = jämn fördelning. ”Visa” öppnar popupen här på sidan, exakt som den ser ut på bulletin.nu (typsnitten kan skilja).</p>
+  </div>
+
+  <div class="box">
+    <h2 style="margin:0 0 8px;font-size:18px">Texter</h2>
+    <pre id="texts"></pre>
+  </div>
+
+  <div class="box">
+    <h2 style="margin:0 0 8px;font-size:18px">Triggers och frekvens</h2>
+    <pre id="rules"></pre>
+  </div>
+
+  <p class="muted">Kontroll på sajten: öppna en artikel på bulletin.nu med <code>?bp_debug=1&amp;bp_variant=C</code> så visas variant C efter 4 sekunder oavsett spärrar. I webbläsarens konsol: <code>BulletinPopup.source()</code> visar varifrån konfigurationen kom.</p>
+</div>
+
+<script src="bulletin-popup.js" data-config="config.json"></script>
+<script>
+(function () {
+  function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
+  function render() {
+    var src = window.BulletinPopup.source();
+    var cfg = window.BulletinPopup.config;
+    var st = document.getElementById('status');
+    st.innerHTML = (cfg.enabled === false ? '<span class="off">Popupen är AVSTÄNGD</span> (enabled: false i config.json)' : '<span class="ok">Popupen är PÅ</span>') +
+      ' · konfiguration från <code>' + esc(src.source) + '</code>' + (src.source !== 'config.json' ? ' <span class="off">– config.json kunde inte läsas, inbyggda värden används</span>' : '');
+    var tb = document.querySelector('#variants tbody'); tb.innerHTML = '';
+    var vs = cfg.variants, text = window.BulletinPopup.text;
+    Object.keys(vs).forEach(function (k) {
+      var v = vs[k];
+      var tr = document.createElement('tr');
+      tr.innerHTML = '<td><code>' + esc(k) + '</code></td><td>' + esc(v.name || '') + '</td><td>' + (v.weight === undefined ? 1 : v.weight) + '</td>' +
+        '<td>' + (v.secondary ? 'ja' : 'nej') + '</td><td>' + (v.tagline ? 'ja' : 'nej') + '</td><td>' + (v.items ? 'ja' : 'nej') + '</td>' +
+        '<td><button type="button" data-k="' + esc(k) + '">Visa</button></td>';
+      tb.appendChild(tr);
+    });
+    tb.addEventListener('click', function (e) { var b = e.target.closest('button[data-k]'); if (b) { document.querySelectorAll('.bp-backdrop').forEach(function (x) { x.remove(); }); document.body.style.overflow = ''; window.BulletinPopup.show(b.getAttribute('data-k')); } });
+    document.getElementById('texts').textContent = JSON.stringify(text, null, 2);
+    var c = cfg;
+    document.getElementById('rules').textContent = JSON.stringify({ pageviewsBeforeShow: c.pageviewsBeforeShow, scrollPercent: c.scrollPercent, secondsOnPage: c.secondsOnPage, exitIntent: c.exitIntent, minDelayMs: c.minDelayMs, dismissDays: c.dismissDays, clickDays: c.clickDays }, null, 2);
+  }
+  // Motorn hämtar config.json asynkront – vänta tills den är klar (max 4 s)
+  var tries = 0;
+  (function wait() { var s = window.BulletinPopup && window.BulletinPopup.source(); if (s && (s.source !== 'inbyggd' || tries > 40)) return render(); tries++; setTimeout(wait, 100); })();
+})();
+</script>
+</body>
+</html>
