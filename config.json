@@ -81,6 +81,7 @@
     }
   },
   "triggers": {
+    "articleOnly": false,
     "pageviewsBeforeShow": 2,
     "scrollPercent": 45,
     "secondsOnPage": 30,
@@ -92,7 +93,6 @@
     "clickDays": 30
   },
   "excludePaths": [
-    "^/$",
     "^/ny-prenumeration",
     "^/mitt-konto",
     "^/login",
