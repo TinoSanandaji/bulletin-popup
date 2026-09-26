@@ -58,7 +58,8 @@
       "tagline": "",
       "primary": "@month",
       "secondary": "@year",
-      "items": "@graven"
+      "items": "@graven",
+      "linkItems": false
     },
     "D_graven_utan_ar": {
       "name": "Gräven utan årsknapp",
