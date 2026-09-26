@@ -371,7 +371,7 @@
         '<div class="bp-inner">' +
           '<div class="bp-head"><h2 class="bp-title" id="bp-title">' + fill(c.title) + '</h2></div>' +
           (c.kicker ? '<div class="bp-kicker">' + c.kicker + '</div>' : '') +
-          (c.items && c.items.length ? '<div class="bp-clips">' + c.items.map(function (it, i) { return '<a class="bp-clip bp-clip-' + (i % 4) + '" href="' + it.url + '" data-bp-article><span class="bp-clip-h">' + it.title + '</span>' + (it.lead ? '<span class="bp-clip-p">' + it.lead + '</span>' : '') + '</a>'; }).join('') + '</div>' : '') +
+          (c.items && c.items.length ? '<div class="bp-clips">' + c.items.map(function (it, i) { var inner = '<span class="bp-clip-h">' + it.title + '</span>' + (it.lead ? '<span class="bp-clip-p">' + it.lead + '</span>' : ''); /* linkItems: false (config) = urklippen visas men gar inte att klicka pa, sa att lasaren stannar i popupen */ return c.linkItems === false ? '<span class="bp-clip bp-clip-' + (i % 4) + '">' + inner + '</span>' : '<a class="bp-clip bp-clip-' + (i % 4) + '" href="' + it.url + '" data-bp-article>' + inner + '</a>'; }).join('') + '</div>' : '') +
           '<p class="bp-body" id="bp-body">' + fill(c.body) + '</p>' +
           (c.tagline ? '<p class="bp-tagline">' + c.tagline + '</p>' : '') +
           '<div class="bp-actions">' + yearBtnHtml + '</div>' +
