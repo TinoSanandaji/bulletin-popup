@@ -83,7 +83,7 @@
     },
     "F_halva_priset": {
       "name": "Halva priset – rubrik + tagline",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "",
       "tagline": "@tagline",
@@ -102,6 +102,16 @@
       "secondary": "",
       "items": "@graven",
       "linkItems": false
+    },
+    "H_halva_priset_lang_text": {
+      "name": "Halva priset + långa texten",
+      "weight": 1,
+      "title": "@title",
+      "body": "@body",
+      "tagline": "@tagline",
+      "primary": "@yearHalf",
+      "primaryProduct": "yearHalf",
+      "secondary": ""
     }
   },
   "triggers": {
