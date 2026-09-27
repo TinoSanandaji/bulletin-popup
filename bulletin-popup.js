@@ -1,5 +1,5 @@
 /*!
- * Bulletin – prenumerationspopup v3.1.0 (2026-09-27) – motor + fjärrkonfiguration
+ * Bulletin – prenumerationspopup v3.1.1 (2026-09-27) – motor + fjärrkonfiguration
  * Fristående, inga beroenden. Laddas via en liten "loader" (bulletin-popup.loader.html) i GTM
  * eller i bulletin-web (_app); själva filen och config.json ligger på en plats Tino styr
  * (GitHub Pages). Texter, varianter, vikter, triggers och av/på ändras i config.json –
@@ -296,7 +296,7 @@
   '.bp-clip{display:block;background:#fff;border:1px solid #d9d9d9;box-shadow:0 8px 18px rgba(0,0,0,.16);padding:11px 16px 10px;text-decoration:none;color:#000;width:94%;transform:rotate(var(--r,0deg));position:relative}' +
   '.bp-clip:hover{z-index:2;box-shadow:0 10px 24px rgba(0,0,0,.22)}' +
   '.bp-clip-0{--r:-1.1deg;align-self:flex-start;z-index:1}' +
-  '.bp-clip-1{--r:.9deg;align-self:flex-end;margin-top:-22px;z-index:2}' +
+  '.bp-clip-1{--r:.9deg;align-self:flex-end;margin-top:-15px;z-index:2}' +
   '.bp-clip-2{--r:-.7deg;align-self:flex-start;margin-top:-22px;z-index:3}' +
   '.bp-clip-3{--r:1.1deg;align-self:flex-end;margin-top:-22px;z-index:4}' +
   '.bp-clip-h{display:block;font-family:"Newsreader",Georgia,serif;font-weight:700;font-size:20px;line-height:1.15;margin:0 0 4px;color:#000}' +
@@ -319,7 +319,7 @@
   '.bp-bar.bp-in{transform:none}' +
   '.bp-bar .bp-btn{padding:8px 14px;font-size:15px}' +
   '.bp-bar .bp-close{top:6px;right:6px;color:#bbb}' +
-  '@media (max-width:600px){.bp-backdrop{align-items:flex-end;padding:0 10px 12vh}.bp-modal{max-width:none;border-radius:14px;transform:translateY(40px)}.bp-inner{padding:22px 18px 20px}.bp-title{font-size:27px}.bp-head{gap:12px;padding-right:30px;margin-bottom:12px}.bp-body,.bp-tagline{font-size:19px}.bp-clips{padding:10px 8px 12px;margin-bottom:14px}.bp-clip{padding:8px 12px 7px;width:95%}.bp-clip-1,.bp-clip-2,.bp-clip-3{margin-top:-10px}.bp-clip-h{font-size:16px;margin:0}.bp-clip-p{display:none}.bp-body{margin-bottom:8px}.bp-btn{font-size:19px;padding:16px 20px}.bp-links{font-size:17px}.bp-bar{font-size:14px;padding:10px 40px 10px 12px;gap:10px}}' +
+  '@media (max-width:600px){.bp-backdrop{align-items:flex-end;padding:0 10px 12vh}.bp-modal{max-width:none;border-radius:14px;transform:translateY(40px)}.bp-inner{padding:22px 18px 20px}.bp-title{font-size:27px}.bp-head{gap:12px;padding-right:30px;margin-bottom:12px}.bp-body,.bp-tagline{font-size:19px}.bp-clips{padding:10px 8px 12px;margin-bottom:14px}.bp-clip{padding:8px 12px 7px;width:95%}.bp-clip-1{margin-top:-5px}.bp-clip-2,.bp-clip-3{margin-top:-10px}.bp-clip-h{font-size:16px;margin:0}.bp-clip-p{display:none}.bp-body{margin-bottom:8px}.bp-btn{font-size:19px;padding:16px 20px}.bp-links{font-size:17px}.bp-bar{font-size:14px;padding:10px 40px 10px 12px;gap:10px}}' +
   '@media (prefers-reduced-motion:reduce){.bp-backdrop,.bp-modal,.bp-bar{transition:none}}';
 
   function injectCSS() {
