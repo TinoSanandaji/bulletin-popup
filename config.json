@@ -112,6 +112,18 @@
       "primary": "@yearHalf",
       "primaryProduct": "yearHalf",
       "secondary": ""
+    },
+    "I_halva_priset_graven_lang_text": {
+      "name": "Halva priset + avslöjanden + långa texten (utan tagline)",
+      "weight": 1,
+      "title": "@title",
+      "body": "@body",
+      "tagline": "",
+      "primary": "@yearHalf",
+      "primaryProduct": "yearHalf",
+      "secondary": "",
+      "items": "@graven",
+      "linkItems": false
     }
   },
   "triggers": {
