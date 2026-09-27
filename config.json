@@ -1,13 +1,14 @@
 {
   "_kommentar": "Bulletins prenumerationspopup – allt som ändras ligger här. Spara filen så slår ändringen igenom på bulletin.nu inom ca 10 minuter. Strängar som börjar med @ hämtas från text (t.ex. \"@body\"); items: \"@graven\" = urklippen nedan. enabled: false stänger av popupen helt. weight: 0 stänger av en variant.",
-  "enabled": false,
+  "enabled": true,
   "text": {
     "title": "Stärk oberoende svensk media",
     "body": "Sverige genomgår en stormig period – där mycket står på spel. Bulletin har haft det mesta öppet för alla under valrörelsen, och gör det fortfarande. De av er som har råd får gärna stötta oss, och bidra till att skifta mediebalansen.",
     "bodyShort": "Bulletin har haft det mesta öppet för alla under valrörelsen, och gör det fortfarande. De av er som har råd får gärna stötta oss, och bidra till att skifta mediebalansen.",
     "tagline": "Sverige förtjänar hederlig journalistik!",
     "month": "Prenumerera – 139 kr/mån",
-    "year": "Ett år – 1 450 kr"
+    "year": "Ett år – 1 450 kr",
+    "yearHalf": "Ett år för 725 kr – halva priset"
   },
   "graven": [
     {
@@ -34,7 +35,7 @@
   "variants": {
     "A_normal": {
       "name": "Normal",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@body",
       "tagline": "@tagline",
@@ -43,7 +44,7 @@
     },
     "B_utan_ar": {
       "name": "Utan årsknapp",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@body",
       "tagline": "@tagline",
@@ -52,7 +53,7 @@
     },
     "C_graven": {
       "name": "Med gräven",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@bodyShort",
       "tagline": "",
@@ -63,7 +64,7 @@
     },
     "D_graven_utan_ar": {
       "name": "Gräven utan årsknapp",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@bodyShort",
       "tagline": "",
@@ -73,12 +74,34 @@
     },
     "E_utan_tagline": {
       "name": "Utan tagline",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@body",
       "tagline": "",
       "primary": "@month",
       "secondary": "@year"
+    },
+    "F_halva_priset": {
+      "name": "Halva priset – rubrik + tagline",
+      "weight": 1,
+      "title": "@title",
+      "body": "",
+      "tagline": "@tagline",
+      "primary": "@yearHalf",
+      "primaryProduct": "yearHalf",
+      "secondary": ""
+    },
+    "G_halva_priset_graven": {
+      "name": "Halva priset + avslöjanden",
+      "weight": 1,
+      "title": "@title",
+      "body": "",
+      "tagline": "@tagline",
+      "primary": "@yearHalf",
+      "primaryProduct": "yearHalf",
+      "secondary": "",
+      "items": "@graven",
+      "linkItems": false
     }
   },
   "triggers": {
@@ -107,5 +130,13 @@
     "^/kategori/",
     "^/sok",
     "^/faq"
-  ]
+  ],
+  "products": {
+    "yearHalf": {
+      "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
+      "label": "725 kr första året",
+      "price": 725,
+      "url": "https://sesa.my/87mkt4p"
+    }
+  }
 }

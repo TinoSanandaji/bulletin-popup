@@ -1,5 +1,5 @@
 /*!
- * Bulletin – prenumerationspopup v3.0 (2026-09-25) – motor + fjärrkonfiguration
+ * Bulletin – prenumerationspopup v3.1.0 (2026-09-27) – motor + fjärrkonfiguration
  * Fristående, inga beroenden. Laddas via en liten "loader" (bulletin-popup.loader.html) i GTM
  * eller i bulletin-web (_app); själva filen och config.json ligger på en plats Tino styr
  * (GitHub Pages). Texter, varianter, vikter, triggers och av/på ändras i config.json –
@@ -335,6 +335,8 @@
     var ls = readJSON('ls', LS); ls.quietUntil = now() + days(CONFIG.clickDays); writeJSON('ls', LS, ls);
     var ssc = readJSON('ss', SS); ssc.clicked = true; ssc.barClosed = true; writeJSON('ss', SS, ssc);
     if (btn) { btn.disabled = true; btn.textContent = 'Öppnar kassan…'; }
+    // Fast kassalänk (t.ex. sesa.my-länk med rabattkod från Sesamy-portalen) går före backend-anropet
+    if (product && product.url) { location.href = product.url; return; }
     var fallback = function () { location.href = CONFIG.fallbackUrl; };
     var done = false;
     var t = setTimeout(function () { if (!done) { done = true; fallback(); } }, 8000);
@@ -363,16 +365,16 @@
     var backdrop = document.createElement('div');
     backdrop.className = 'bp-backdrop'; backdrop.setAttribute('data-bp', '1');
     var yearBtnHtml =
-        '<button type="button" class="bp-btn bp-primary" data-bp-product="month">' + c.primary + '</button>' +
-        (c.secondary ? '<button type="button" class="bp-btn bp-secondary" data-bp-product="year">' + c.secondary + '</button>' : '');
+        '<button type="button" class="bp-btn bp-primary" data-bp-product="' + (c.primaryProduct || 'month') + '">' + c.primary + '</button>' +
+        (c.secondary ? '<button type="button" class="bp-btn bp-secondary" data-bp-product="' + (c.secondaryProduct || 'year') + '">' + c.secondary + '</button>' : '');
     backdrop.innerHTML =
       '<div class="bp-modal" role="dialog" aria-modal="true" aria-labelledby="bp-title" aria-describedby="bp-body">' +
         '<button type="button" class="bp-close" aria-label="Stäng" data-bp-close>&times;</button>' +
         '<div class="bp-inner">' +
           '<div class="bp-head"><h2 class="bp-title" id="bp-title">' + fill(c.title) + '</h2></div>' +
           (c.kicker ? '<div class="bp-kicker">' + c.kicker + '</div>' : '') +
-          (c.items && c.items.length ? '<div class="bp-clips">' + c.items.map(function (it, i) { var inner = '<span class="bp-clip-h">' + it.title + '</span>' + (it.lead ? '<span class="bp-clip-p">' + it.lead + '</span>' : ''); /* linkItems: false (config) = urklippen visas men gar inte att klicka pa, sa att lasaren stannar i popupen */ return c.linkItems === false ? '<span class="bp-clip bp-clip-' + (i % 4) + '">' + inner + '</span>' : '<a class="bp-clip bp-clip-' + (i % 4) + '" href="' + it.url + '" data-bp-article>' + inner + '</a>'; }).join('') + '</div>' : '') +
-          '<p class="bp-body" id="bp-body">' + fill(c.body) + '</p>' +
+          (c.items && c.items.length ? '<div class="bp-clips">' + c.items.map(function (it, i) { var inner = '<span class="bp-clip-h">' + it.title + '</span>' + (it.lead ? '<span class="bp-clip-p">' + it.lead + '</span>' : ''); /* linkItems: false (config) = urklippen visas men gar inte att klicka pa */ return c.linkItems === false ? '<span class="bp-clip bp-clip-' + (i % 4) + '">' + inner + '</span>' : '<a class="bp-clip bp-clip-' + (i % 4) + '" href="' + it.url + '" data-bp-article>' + inner + '</a>'; }).join('') + '</div>' : '') +
+          (c.body ? '<p class="bp-body" id="bp-body">' + fill(c.body) + '</p>' : '') +
           (c.tagline ? '<p class="bp-tagline">' + c.tagline + '</p>' : '') +
           '<div class="bp-actions">' + yearBtnHtml + '</div>' +
           '<div class="bp-links">' +
