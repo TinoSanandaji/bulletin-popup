@@ -1,5 +1,5 @@
 /*!
- * Bulletin – prenumerationspopup v3.1.1 (2026-09-27) – motor + fjärrkonfiguration
+ * Bulletin – prenumerationspopup v3.2.0 (2026-09-29) – motor + fjärrkonfiguration
  * Fristående, inga beroenden. Laddas via en liten "loader" (bulletin-popup.loader.html) i GTM
  * eller i bulletin-web (_app); själva filen och config.json ligger på en plats Tino styr
  * (GitHub Pages). Texter, varianter, vikter, triggers och av/på ändras i config.json –
@@ -274,8 +274,10 @@
     try {
       if (typeof window.fbq === 'function') {
         window.fbq('trackCustom', 'BulletinPopup', params);
-        var per = { view: 'BulletinPopupView', click: 'BulletinPopupClick', dismiss: 'BulletinPopupDismiss', click_article: 'BulletinPopupArticle' }[action];
+        var per = { view: 'BulletinPopupView', click: 'BulletinPopupClick', dismiss: 'BulletinPopupDismiss', click_article: 'BulletinPopupArticle', purchase: 'BulletinPopupPurchase' }[action];
         if (per) window.fbq('trackCustom', per, params);
+        // Events Manager bryter inte ner egna parametrar – därför även ett event per variant (t.ex. BulletinPopupClick_G)
+        if (per && state.variant) window.fbq('trackCustom', per + '_' + String(state.variant).split('_')[0], params);
       }
     } catch (e) {}
     if (debug) try { console.log('[BulletinPopup]', payload); } catch (e) {}
@@ -332,7 +334,10 @@
   function goToCheckout(productKey, btn) {
     var product = CONFIG.products[productKey];
     track('click', { popup_product: productKey });
-    var ls = readJSON('ls', LS); ls.quietUntil = now() + days(CONFIG.clickDays); writeJSON('ls', LS, ls);
+    var ls = readJSON('ls', LS); ls.quietUntil = now() + days(CONFIG.clickDays);
+    // kom ihåg klicket, så att köpet kan tillskrivas varianten när läsaren landar på /sesamy/checkout-callback
+    ls.lastClick = { variant: state.variant, product: productKey, price: (product && product.price) || null, t: now() };
+    writeJSON('ls', LS, ls);
     var ssc = readJSON('ss', SS); ssc.clicked = true; ssc.barClosed = true; writeJSON('ss', SS, ssc);
     if (btn) { btn.disabled = true; btn.textContent = 'Öppnar kassan…'; }
     // Fast kassalänk (t.ex. sesa.my-länk med rabattkod från Sesamy-portalen) går före backend-anropet
@@ -508,7 +513,21 @@
     return true;
   }
 
+  // Köp: Sesamys kassa skickar läsaren till /sesamy/checkout-callback. Har läsaren klickat i popupen
+  // de senaste 2 timmarna tillskrivs köpet varianten (en gång per klick) – till GA4/GTM och Meta,
+  // inkl. ett standard-Purchase till Meta med belopp.
+  function trackPurchaseIfAny() {
+    if (!/^\/sesamy\/checkout-callback/.test(location.pathname)) return;
+    var ls = readJSON('ls', LS), c = ls.lastClick;
+    if (!c || !c.variant || c.purchased || now() - c.t > 2 * 3600e3) return;
+    c.purchased = true; ls.lastClick = c; writeJSON('ls', LS, ls);
+    state.variant = c.variant; state.trigger = 'purchase';
+    track('purchase', { popup_product: c.product, popup_value: c.price || 0 });
+    try { if (typeof window.fbq === 'function') window.fbq('track', 'Purchase', { value: c.price || 0, currency: 'SEK', content_name: 'popup_' + c.variant, content_type: 'subscription' }); } catch (e) {}
+  }
+
   function init() {
+    trackPurchaseIfAny();
     // räkna sidvisningar i sessionen (även SPA-navigering i Next.js)
     var ss = readJSON('ss', SS); ss.pv = (ss.pv || 0) + 1; writeJSON('ss', SS, ss);
     // hämta config.json (cache per session) och armera först därefter

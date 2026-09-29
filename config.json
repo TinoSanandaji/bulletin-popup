@@ -98,7 +98,7 @@
       "body": "",
       "tagline": "@tagline",
       "primary": "@yearHalf",
-      "primaryProduct": "yearHalf",
+      "primaryProduct": "yearHalf_G",
       "secondary": "",
       "items": "@graven",
       "linkItems": false
@@ -110,7 +110,7 @@
       "body": "@body",
       "tagline": "@tagline",
       "primary": "@yearHalf",
-      "primaryProduct": "yearHalf",
+      "primaryProduct": "yearHalf_H",
       "secondary": ""
     },
     "I_halva_priset_graven_lang_text": {
@@ -120,7 +120,7 @@
       "body": "@body",
       "tagline": "",
       "primary": "@yearHalf",
-      "primaryProduct": "yearHalf",
+      "primaryProduct": "yearHalf_I",
       "secondary": "",
       "items": "@graven",
       "linkItems": false
@@ -159,6 +159,25 @@
       "label": "725 kr första året",
       "price": 725,
       "url": "https://sesa.my/87mkt4p"
+    },
+    "yearHalf_G": {
+      "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
+      "label": "725 kr första året",
+      "price": 725,
+      "url": "https://sesa.my/0yu2n7x"
+    },
+    "yearHalf_H": {
+      "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
+      "label": "725 kr första året",
+      "price": 725,
+      "url": "https://sesa.my/0ak7m7a"
+    },
+    "yearHalf_I": {
+      "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
+      "label": "725 kr första året",
+      "price": 725,
+      "url": "https://sesa.my/ptg3vgd"
     }
-  }
+  },
+  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM."
 }
