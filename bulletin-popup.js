@@ -1,5 +1,5 @@
 /*!
- * Bulletin – prenumerationspopup v3.2.0 (2026-09-29) – motor + fjärrkonfiguration
+ * Bulletin – prenumerationspopup v3.2.1 (2026-09-29) – motor + fjärrkonfiguration
  * Fristående, inga beroenden. Laddas via en liten "loader" (bulletin-popup.loader.html) i GTM
  * eller i bulletin-web (_app); själva filen och config.json ligger på en plats Tino styr
  * (GitHub Pages). Texter, varianter, vikter, triggers och av/på ändras i config.json –
@@ -114,6 +114,7 @@
       button: 'Prenumerera'
     },
     lang: 'sv',
+    ga4Id: 'G-RYZK42138N',       // GA4-mätid (send_to) när window.gtag saknas; '' = av
     zIndex: 2147483000
   };
 
@@ -167,7 +168,7 @@
     // platta nycklar + grupperna triggers/frequency (för läsbarhet i config.json)
     var flat = ['enabled', 'backendUrl', 'fallbackUrl', 'showTrialLink', 'discountCode', 'discountText',
                 'pageviewsBeforeShow', 'scrollPercent', 'secondsOnPage', 'exitIntent', 'minDelayMs', 'articleOnly',
-                'dismissDays', 'clickDays', 'oncePerSession', 'barAfterDismiss', 'excludeUtmMediums', 'lang'];
+                'dismissDays', 'clickDays', 'oncePerSession', 'barAfterDismiss', 'excludeUtmMediums', 'lang', 'ga4Id'];
     var groups = [cfg, cfg.triggers || {}, cfg.frequency || {}];
     for (var g = 0; g < groups.length; g++) for (var i = 0; i < flat.length; i++) if (groups[g][flat[i]] !== undefined) CONFIG[flat[i]] = groups[g][flat[i]];
     if (cfg.excludePaths && cfg.excludePaths.length) CONFIG.excludePaths = cfg.excludePaths.map(toRegExp).filter(Boolean);
@@ -270,7 +271,14 @@
     var payload = { event: 'bulletin_popup' };
     for (var p in params) payload[p] = params[p];
     try { window.dataLayer = window.dataLayer || []; window.dataLayer.push(payload); } catch (e) {}
-    try { if (typeof window.gtag === 'function') window.gtag('event', 'bulletin_popup', params); } catch (e) {}
+    try {
+      if (typeof window.gtag === 'function') window.gtag('event', 'bulletin_popup', params);
+      else if (CONFIG.ga4Id) {
+        // GA4 laddas via GTM utan window.gtag: gtag.js lyssnar ändå på dataLayer – ett arguments-objekt med send_to når G-RYZK42138N direkt (verifierat 29 sep 2026)
+        var gp = {}; for (var q in params) gp[q] = params[q]; gp.send_to = CONFIG.ga4Id;
+        (function () { window.dataLayer.push(arguments); })('event', 'bulletin_popup', gp);
+      }
+    } catch (e) {}
     try {
       if (typeof window.fbq === 'function') {
         window.fbq('trackCustom', 'BulletinPopup', params);
