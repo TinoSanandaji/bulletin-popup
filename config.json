@@ -158,26 +158,26 @@
       "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
       "label": "725 kr första året",
       "price": 725,
-      "url": "https://sesa.my/87mkt4p"
+      "url": "https://checkout3.sesamy.com/?sku=sid%3Arg1Kt4hcQc2AlUxg0K6Rv&option=6DhtuBs_wBXoN4CfjKe-W&discountCode=BULLETIN&lang=sv&country=SE&redirect-url=https%3A%2F%2Fbulletin.nu%2Fsesamy%2Fcheckout-callback&utm_source=popup&utm_medium=onsite&utm_campaign=halva-priset&utm_content=F_halva_priset"
     },
     "yearHalf_G": {
       "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
       "label": "725 kr första året",
       "price": 725,
-      "url": "https://sesa.my/0yu2n7x"
+      "url": "https://checkout3.sesamy.com/?sku=sid%3Arg1Kt4hcQc2AlUxg0K6Rv&option=6DhtuBs_wBXoN4CfjKe-W&discountCode=BULLETIN&lang=sv&country=SE&redirect-url=https%3A%2F%2Fbulletin.nu%2Fsesamy%2Fcheckout-callback&utm_source=popup&utm_medium=onsite&utm_campaign=halva-priset&utm_content=G_halva_priset_graven"
     },
     "yearHalf_H": {
       "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
       "label": "725 kr första året",
       "price": 725,
-      "url": "https://sesa.my/0ak7m7a"
+      "url": "https://checkout3.sesamy.com/?sku=sid%3Arg1Kt4hcQc2AlUxg0K6Rv&option=6DhtuBs_wBXoN4CfjKe-W&discountCode=BULLETIN&lang=sv&country=SE&redirect-url=https%3A%2F%2Fbulletin.nu%2Fsesamy%2Fcheckout-callback&utm_source=popup&utm_medium=onsite&utm_campaign=halva-priset&utm_content=H_halva_priset_lang_text"
     },
     "yearHalf_I": {
       "tag": "READER_SUBSCRIPTION_STANDARD_12_MONTH",
       "label": "725 kr första året",
       "price": 725,
-      "url": "https://sesa.my/ptg3vgd"
+      "url": "https://checkout3.sesamy.com/?sku=sid%3Arg1Kt4hcQc2AlUxg0K6Rv&option=6DhtuBs_wBXoN4CfjKe-W&discountCode=BULLETIN&lang=sv&country=SE&redirect-url=https%3A%2F%2Fbulletin.nu%2Fsesamy%2Fcheckout-callback&utm_source=popup&utm_medium=onsite&utm_campaign=halva-priset&utm_content=I_halva_priset_graven_lang_text"
     }
   },
-  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM. 5 okt 2026: utvärdering efter en vecka (Meta-pixeln) gav G 8 köp, H 5, I 2 – H och I stängda (weight 0), bara G körs. dismissDays sänkt från 7 till 3 så att popupen visas oftare för den som stängt den."
+  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM. 5 okt 2026: utvärdering efter en vecka (Meta-pixeln) gav G 8 köp, H 5, I 2 – H och I stängda (weight 0), bara G körs. dismissDays sänkt från 7 till 3 så att popupen visas oftare för den som stängt den. 5 okt: kassalänkarna går nu direkt till checkout3.sesamy.com med lang=sv och country=SE förvalt (färre fält i steg 1) i stället för sesa.my."
 }
