@@ -105,7 +105,7 @@
     },
     "H_halva_priset_lang_text": {
       "name": "Halva priset + långa texten",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@body",
       "tagline": "@tagline",
@@ -115,7 +115,7 @@
     },
     "I_halva_priset_graven_lang_text": {
       "name": "Halva priset + avslöjanden + långa texten (utan tagline)",
-      "weight": 1,
+      "weight": 0,
       "title": "@title",
       "body": "@body",
       "tagline": "",
@@ -135,7 +135,7 @@
     "minDelayMs": 4000
   },
   "frequency": {
-    "dismissDays": 7,
+    "dismissDays": 3,
     "clickDays": 30
   },
   "excludePaths": [
@@ -179,5 +179,5 @@
       "url": "https://sesa.my/ptg3vgd"
     }
   },
-  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM."
+  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM. 5 okt 2026: utvärdering efter en vecka (Meta-pixeln) gav G 8 köp, H 5, I 2 – H och I stängda (weight 0), bara G körs. dismissDays sänkt från 7 till 3 så att popupen visas oftare för den som stängt den."
 }
