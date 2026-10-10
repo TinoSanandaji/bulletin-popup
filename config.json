@@ -1,6 +1,6 @@
 {
   "_kommentar": "Bulletins prenumerationspopup – allt som ändras ligger här. Spara filen så slår ändringen igenom på bulletin.nu inom ca 10 minuter. Strängar som börjar med @ hämtas från text (t.ex. \"@body\"); items: \"@graven\" = urklippen nedan. enabled: false stänger av popupen helt. weight: 0 stänger av en variant.",
-  "enabled": true,
+  "enabled": false,
   "text": {
     "title": "Stärk oberoende svensk media",
     "body": "Sverige genomgår en stormig period – där mycket står på spel. Bulletin har haft det mesta öppet för alla under valrörelsen, och gör det fortfarande. De av er som har råd får gärna stötta oss, och bidra till att skifta mediebalansen.",
