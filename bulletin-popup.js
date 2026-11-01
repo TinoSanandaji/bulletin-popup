@@ -1,5 +1,5 @@
 /*!
- * Bulletin – prenumerationspopup v3.2.1 (2026-09-29) – motor + fjärrkonfiguration
+ * Bulletin – prenumerationspopup v3.3 (2026-11-01) – motor + fjärrkonfiguration
  * Fristående, inga beroenden. Laddas via en liten "loader" (bulletin-popup.loader.html) i GTM
  * eller i bulletin-web (_app); själva filen och config.json ligger på en plats Tino styr
  * (GitHub Pages). Texter, varianter, vikter, triggers och av/på ändras i config.json –
@@ -30,7 +30,9 @@
  *  - Knapparna skapar en Sesamy-kassa via Bulletins befintliga backend
  *    (POST https://backend.bulletin.nu/api/sesamy/guest-checkout-url) och skickar läsaren dit.
  *    Faller tillbaka på /ny-prenumeration om anropet misslyckas.
- *  - Frekvensspärr: max 1 visning per session; "Inte just nu" = tyst 7 dagar; klick på köp = tyst 30 dagar.
+ *  - Frekvensspärr: max 1 visning per session; viewDays (v3.3) = tyst N dagar räknat från varje visning,
+ *    oavsett hur läsaren lämnar popupen; "Inte just nu" = tyst dismissDays; klick på köp = tyst clickDays
+ *    (värdena styrs i config.json – 1 nov 2026: alla tre = 1, dvs. max en gång per dygn).
  *  - Den diskreta listen efter avvisning är avstängd (barAfterDismiss) – slå på om den ska testas.
  *
  * Allt som är rimligt att ändra ligger i config.json (samma nycklar som TEXT/GRAVEN/CONFIG nedan).
@@ -88,6 +90,7 @@
     articleOnly: true,           // bara på artikelsidor (sidor med <article> eller h1 utanför startsidan)
 
     // ---- Frekvens ----
+    viewDays: 0,                 // >0: varje visning ger tyst i N dagar oavsett hur popupen lämnas (1 = max en gång per dygn); sätts i config.json
     dismissDays: 7,              // "Inte just nu"/stäng → tyst i 7 dagar
     clickDays: 30,               // klick på köp → tyst i 30 dagar
     oncePerSession: true,
@@ -168,7 +171,7 @@
     // platta nycklar + grupperna triggers/frequency (för läsbarhet i config.json)
     var flat = ['enabled', 'backendUrl', 'fallbackUrl', 'showTrialLink', 'discountCode', 'discountText',
                 'pageviewsBeforeShow', 'scrollPercent', 'secondsOnPage', 'exitIntent', 'minDelayMs', 'articleOnly',
-                'dismissDays', 'clickDays', 'oncePerSession', 'barAfterDismiss', 'excludeUtmMediums', 'lang', 'ga4Id'];
+                'viewDays', 'dismissDays', 'clickDays', 'oncePerSession', 'barAfterDismiss', 'excludeUtmMediums', 'lang', 'ga4Id'];
     var groups = [cfg, cfg.triggers || {}, cfg.frequency || {}];
     for (var g = 0; g < groups.length; g++) for (var i = 0; i < flat.length; i++) if (groups[g][flat[i]] !== undefined) CONFIG[flat[i]] = groups[g][flat[i]];
     if (cfg.excludePaths && cfg.excludePaths.length) CONFIG.excludePaths = cfg.excludePaths.map(toRegExp).filter(Boolean);
@@ -411,6 +414,8 @@
     var prevOverflow = document.body.style.overflow; document.body.style.overflow = 'hidden';
     setTimeout(function () { el.classList.add('bp-in'); }, 30); // setTimeout i st.f. rAF – rAF pausas i bakgrundsflikar
     var ss = readJSON('ss', SS); ss.shown = true; writeJSON('ss', SS, ss);
+    // viewDays (v3.3): själva visningen ger tystnad i N dagar – även om fliken bara stängs utan klick/avvisning
+    if (CONFIG.viewDays > 0) { var lsv = readJSON('ls', LS); var untilV = now() + days(CONFIG.viewDays); if (!lsv.quietUntil || lsv.quietUntil < untilV) lsv.quietUntil = untilV; writeJSON('ls', LS, lsv); }
     track('view', loginSt === 'unknown' ? { popup_login: 'unknown' } : null);
 
     function close(reason) {
