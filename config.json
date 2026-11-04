@@ -1,6 +1,6 @@
 {
   "_kommentar": "Bulletins prenumerationspopup – allt som ändras ligger här. Spara filen så slår ändringen igenom på bulletin.nu inom ca 10 minuter. Strängar som börjar med @ hämtas från text (t.ex. \"@body\"); items: \"@graven\" = urklippen nedan. enabled: false stänger av popupen helt. weight: 0 stänger av en variant.",
-  "enabled": true,
+  "enabled": false,
   "text": {
     "title": "Stärk oberoende svensk media",
     "body": "Sverige genomgår en stormig period – där mycket står på spel. Bulletin har haft det mesta öppet för alla under valrörelsen, och gör det fortfarande. De av er som har råd får gärna stötta oss, och bidra till att skifta mediebalansen.",
@@ -180,5 +180,5 @@
       "url": "https://checkout3.sesamy.com/?sku=sid%3Arg1Kt4hcQc2AlUxg0K6Rv&option=6DhtuBs_wBXoN4CfjKe-W&discountCode=BULLETIN&lang=sv&country=SE&redirect-url=https%3A%2F%2Fbulletin.nu%2Fsesamy%2Fcheckout-callback&utm_source=popup&utm_medium=onsite&utm_campaign=halva-priset&utm_content=I_halva_priset_graven_lang_text"
     }
   },
-  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM. 5 okt 2026: utvärdering efter en vecka (Meta-pixeln) gav G 8 köp, H 5, I 2 – H och I stängda (weight 0), bara G körs. dismissDays sänkt från 7 till 3 så att popupen visas oftare för den som stängt den. 5 okt: kassalänkarna går nu direkt till checkout3.sesamy.com med lang=sv och country=SE förvalt (färre fält i steg 1) i stället för sesa.my. 1 nov 2026: popupen påslagen igen (enabled: true) på Tinos begäran; frekvens max en visning per dygn och besökare: viewDays 1 (nytt i motorn v3.3 – räknas från visningen, även om fliken bara stängs), dismissDays 1, clickDays 1."
+  "_kommentar_matning": "Mätning: varje variant har egen sesa.my-länk (UTM utm_content = variantnamn) så att köp kan skiljas åt i Sesamy; popupen skickar dessutom BulletinPopupView/Click/Purchase_<bokstav> till Meta och bulletin_popup till GA4 via GTM. 5 okt 2026: utvärdering efter en vecka (Meta-pixeln) gav G 8 köp, H 5, I 2 – H och I stängda (weight 0), bara G körs. dismissDays sänkt från 7 till 3 så att popupen visas oftare för den som stängt den. 5 okt: kassalänkarna går nu direkt till checkout3.sesamy.com med lang=sv och country=SE förvalt (färre fält i steg 1) i stället för sesa.my. 1 nov 2026: popupen påslagen igen (enabled: true) på Tinos begäran; frekvens max en visning per dygn och besökare: viewDays 1 (nytt i motorn v3.3 – räknas från visningen, även om fliken bara stängs), dismissDays 1, clickDays 1. 4 nov 2026: avstängd igen (enabled: false) på Tinos begäran."
 }
